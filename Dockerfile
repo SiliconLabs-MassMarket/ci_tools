@@ -24,10 +24,10 @@ RUN python3 -m venv /opt/zephyrproject/.venv && \
 
 # Download and setup Zephyr SDK
 WORKDIR /opt
-RUN wget https://github.com/zephyrproject-rtos/sdk-ng/releases/download/v0.17.4/zephyr-sdk-0.17.4_linux-x86_64.tar.xz && \
+RUN wget https://github.com/zephyrproject-rtos/sdk-ng/releases/download/v0.17.4/zephyr-sdk-0.17.4_linux-x86_64.tar.xz > /dev/null 2>&1 && \
     wget -O sha256.sum https://github.com/zephyrproject-rtos/sdk-ng/releases/download/v0.17.4/sha256.sum && \
     shasum --check --ignore-missing sha256.sum && \
-    tar xvf zephyr-sdk-0.17.4_linux-x86_64.tar.xz && \
+    tar xvf zephyr-sdk-0.17.4_linux-x86_64.tar.xz > /dev/null 2>&1 && \
     cd zephyr-sdk-0.17.4 && \
     ./setup.sh -h -c -t all
 

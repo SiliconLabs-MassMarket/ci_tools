@@ -23,17 +23,17 @@ RUN python3 -m venv /opt/zephyrproject/.venv && \
     west packages pip --install
 
 # Download and setup Zephyr SDK
-WORKDIR $HOME
+WORKDIR /opt
 RUN wget https://github.com/zephyrproject-rtos/sdk-ng/releases/download/v0.17.4/zephyr-sdk-0.17.4_linux-x86_64.tar.xz > /dev/null 2>&1 && \
     wget -O sha256.sum https://github.com/zephyrproject-rtos/sdk-ng/releases/download/v0.17.4/sha256.sum && \
     shasum --check --ignore-missing sha256.sum && \
     tar xvf zephyr-sdk-0.17.4_linux-x86_64.tar.xz > /dev/null 2>&1 && \
     cd zephyr-sdk-0.17.4 && \
-    ./setup.sh -h -c -t all
+    ./setup.sh -c -t arm-zephyr-eabi
 
 # (Optional) Add Zephyr SDK or west to PATH (if needed by default)
-ENV PATH="$HOME/zephyr-sdk-0.17.4:${PATH}"
-ENV PATH="$HOME/zephyrproject/.venv/bin:${PATH}"
+ENV PATH="/opt/zephyr-sdk-0.17.4:${PATH}"
+ENV PATH="/opt/zephyrproject/.venv/bin:${PATH}"
 
 # Set default workdir
 WORKDIR /workspace

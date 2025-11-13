@@ -15,12 +15,12 @@ RUN apt-get update && apt-get upgrade -y && \
 RUN python3 -m venv /opt/zephyrproject/.venv && \
     . /opt/zephyrproject/.venv/bin/activate && \
     pip install --upgrade pip && \
-    pip install west && \
-    west init /opt/zephyrproject && \
-    cd /opt/zephyrproject && \
-    west update && \
-    west zephyr-export && \
-    west packages pip --install
+    pip install west
+    #west init /opt/zephyrproject && \
+    # cd /opt/zephyrproject && \
+    # west update && \
+    # west zephyr-export && \
+    # west packages pip --install
 
 # Download and setup Zephyr SDK
 WORKDIR /opt

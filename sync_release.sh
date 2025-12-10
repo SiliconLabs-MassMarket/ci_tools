@@ -1,0 +1,30 @@
+#/bin/bash
+PRIVATE_REPO=$1
+PUBLIC_REPO=$2
+
+echo "===================================="
+echo "Syning for $PRIVATE_REPO"
+
+
+# Check for releases
+RELEASES=$(gh release list --repo "$PRIVATE_REPO" --limit 1)
+if [ -z "$RELEASES" ]; then
+  echo "No releases found for $PRIVATE_REPO."
+  exit 0
+fi
+
+# Get the latest release tags from the private repo
+tag=$(gh release list --repo $PRIVATE_REPO --json tagName --jq '.[0].tagName')
+echo "Processing release: $tag"
+
+# Check if the release exists
+if gh release view "$tag" --repo $PUBLIC_REPO > /dev/null 2>&1; then
+  echo "Release with tag '$tag' already exists in public repo."
+else
+  # Get release metadata
+  title=$(gh release view "$tag" --repo "$PRIVATE_REPO" --json name -q .name)
+  notes=$(gh release view "$tag" --repo "$PRIVATE_REPO" --json body -q .body)
+
+  # Create release in public repo
+  gh release create "$tag" --repo "$PUBLIC_REPO" --title "$title" --notes "$notes"
+fi
